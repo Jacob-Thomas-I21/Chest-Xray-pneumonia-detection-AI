@@ -77,36 +77,9 @@ print(f"Prediction: {result['prediction']} (Confidence: {result['confidence']:.3
 - **Specificity (83.33%)**: Controls false positives
 - **Precision (90.80%)**: Reduces unnecessary interventions
 - **Accuracy (92.95%)**: Overall performance measure
-# 📋 Assignment Submission Checklist
 
-## 🎯 What You Need to Submit
 
-### **a) Code Repository (GitHub)** ✅
-**Required Files:**
-- ✅ `pneumonia_detection_pipeline.py` (your training script)
-- ✅ `requirements.txt` (updated version we created)
-- ✅ `README.md` (comprehensive version we created)
-- ✅ **Hyperparameter justification note** (add this section)
-
-**Optional but Recommended:**
-- ✅ `best_pneumonia_resnet50.pth` (trained model)
-- ✅ `pneumonia_detector.py` (production inference code)
-
-### **b) Presentation (Max 3 PPT slides)** ✅
-**Required Slides:**
-1. **Problem & Approach** - Your methodology
-2. **Model Architecture & Workflow** - Pipeline and modifications  
-3. **Results & Insights** - Metrics and class imbalance observations
-
----
-
-## 📝 Missing Content You Need to Add
-
-### **1. Hyperparameter Justification Note**
-Add this section to your README.md:
-
-```markdown
-## 🎛️ Hyperparameter Choices & Justification
+##  Hyperparameter Choices & Justification
 
 ### **Learning Rate: 1e-4**
 - **Justification**: Conservative rate for fine-tuning pre-trained models
@@ -134,12 +107,6 @@ Add this section to your README.md:
 - **Benefit**: Prevents co-adaptation while maintaining feature learning
 ```
 
-### **2. Required Evaluation Strategy Sections**
-
-Add these to your README.md under "## 📈 Evaluation Strategy":
-
-#### **a) 3 Chosen Metrics with Justification:**
-```markdown
 ### **Chosen Metrics & Justification:**
 
 1. **F1-Score (Primary Metric)**
@@ -158,8 +125,6 @@ Add these to your README.md under "## 📈 Evaluation Strategy":
    - **Result**: 98.72% (only 5 missed cases out of 390)
 ```
 
-#### **b) Class Imbalance Detection & Mitigation:**
-```markdown
 ### **Class Imbalance Handling:**
 
 **Detection:**
@@ -173,10 +138,7 @@ Add these to your README.md under "## 📈 Evaluation Strategy":
 4. **Augmentation**: Robust augmentation for minority class generalization
 
 **Impact**: Improved F1-score by ~15% compared to naive training
-```
 
-#### **c) Overfitting Prevention Measures:**
-```markdown
 ### **Overfitting Prevention:**
 
 **Regularization Techniques:**
@@ -210,15 +172,6 @@ pneumonia-detection-resnet50/
     └── training_curves.png
 ```
 
-## 🎛️ Optimized Hyperparameters
-
-### Training Configuration
-- **Learning Rate**: 1e-4 (conservative for stable fine-tuning)
-- **Batch Size**: 64 (optimal for GPU memory and convergence)
-- **Epochs**: 25 (early stopped at epoch 13)
-- **Weight Decay**: 1e-4 (L2 regularization)
-- **Optimizer**: AdamW (β1=0.9, β2=0.999)
-
 ### Model Configuration
 - **Dropout Rate**: 0.5 (optimal for regularization)
 - **Gradient Clipping**: Max norm 1.0
@@ -240,23 +193,6 @@ pneumonia-detection-resnet50/
 - **PyTorch (.pth)**: Native format for PyTorch deployment
 - **ONNX (.onnx)**: Framework-agnostic for production (recommended)
 - **Complete Package**: Ready-to-use inference scripts
-
-### API Integration Example
-```python
-# FastAPI endpoint ready
-from pneumonia_detector import PneumoniaDetector
-
-detector = PneumoniaDetector()
-
-# Single prediction
-result = detector.predict("xray.jpg")
-
-# Batch processing
-results = detector.predict_batch(image_list, batch_size=8)
-
-# Get model performance info
-info = detector.get_model_info()
-```
 
 ##  Training Results Analysis
 
