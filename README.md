@@ -77,29 +77,137 @@ print(f"Prediction: {result['prediction']} (Confidence: {result['confidence']:.3
 - **Specificity (83.33%)**: Controls false positives
 - **Precision (90.80%)**: Reduces unnecessary interventions
 - **Accuracy (92.95%)**: Overall performance measure
+# 📋 Assignment Submission Checklist
 
-##  Project Structure
+## 🎯 What You Need to Submit
+
+### **a) Code Repository (GitHub)** ✅
+**Required Files:**
+- ✅ `pneumonia_detection_pipeline.py` (your training script)
+- ✅ `requirements.txt` (updated version we created)
+- ✅ `README.md` (comprehensive version we created)
+- ✅ **Hyperparameter justification note** (add this section)
+
+**Optional but Recommended:**
+- ✅ `best_pneumonia_resnet50.pth` (trained model)
+- ✅ `pneumonia_detector.py` (production inference code)
+
+### **b) Presentation (Max 3 PPT slides)** ✅
+**Required Slides:**
+1. **Problem & Approach** - Your methodology
+2. **Model Architecture & Workflow** - Pipeline and modifications  
+3. **Results & Insights** - Metrics and class imbalance observations
+
+---
+
+## 📝 Missing Content You Need to Add
+
+### **1. Hyperparameter Justification Note**
+Add this section to your README.md:
+
+```markdown
+## 🎛️ Hyperparameter Choices & Justification
+
+### **Learning Rate: 1e-4**
+- **Justification**: Conservative rate for fine-tuning pre-trained models
+- **Prevents**: Destroying pre-trained ImageNet features
+- **Result**: Stable convergence without overshooting
+
+### **Batch Size: 64**
+- **Justification**: Optimal balance between GPU memory and gradient stability
+- **Benefits**: Sufficient samples for stable gradient estimation
+- **Hardware**: Fits well within typical GPU memory constraints
+
+### **Epochs: 25 (Early stopped at 13)**
+- **Justification**: Sufficient for convergence with early stopping safety net
+- **Early Stopping**: Patience=7 prevents overfitting
+- **Result**: Optimal model selected at epoch 6
+
+### **Weight Decay: 1e-4**
+- **Justification**: L2 regularization prevents overfitting
+- **Balance**: Strong enough to regularize, mild enough not to hurt performance
+- **Medical Context**: Critical for generalization in medical imaging
+
+### **Dropout Rate: 0.5**
+- **Justification**: Standard regularization for medical imaging
+- **Location**: Applied in custom classifier head only
+- **Benefit**: Prevents co-adaptation while maintaining feature learning
 ```
-pneumonia-detection/
-├── pneumonia_detection_pipeline.py    # Main training script
-├── pneumonia_detector.py             # Production-ready inference class
-├── requirements.txt                   # Dependencies
-├── README.md                         # Documentation
-├── best_pneumonia_resnet50.pth       # Best model checkpoint (Epoch 6)
-├── model_exports/                    # Production model formats
-│   ├── pneumonia_model.onnx         # ONNX format (recommended)
-│   ├── pneumonia_model_weights.pth  # PyTorch weights
-│   ├── model_config.json           # Model configuration
-│   └── inference_script.py         # Ready-to-use inference
-├── results/
-│   ├── model_summary.json           # Complete model details
-│   ├── training_history.pkl         # Training metrics over time
-│   ├── test_results.pkl            # Final test predictions
-│   └── results_summary.txt         # Human-readable summary
-└── visualizations/
-    ├── training_curves.png          # Loss and accuracy plots
-    ├── confusion_matrix.png         # Test set confusion matrix
-    └── roc_curve.png               # ROC curve analysis
+
+### **2. Required Evaluation Strategy Sections**
+
+Add these to your README.md under "## 📈 Evaluation Strategy":
+
+#### **a) 3 Chosen Metrics with Justification:**
+```markdown
+### **Chosen Metrics & Justification:**
+
+1. **F1-Score (Primary Metric)**
+   - **Why**: Balanced measure for imbalanced datasets (3:1 ratio)
+   - **Clinical Importance**: Considers both precision and recall equally
+   - **Result**: 94.59% (exceptional performance)
+
+2. **AUC-ROC (Secondary Metric)**  
+   - **Why**: Threshold-independent discrimination ability
+   - **Medical Value**: Shows model's ability to distinguish classes at all thresholds
+   - **Result**: 97.62% (near-perfect discrimination)
+
+3. **Sensitivity/Recall (Clinical Metric)**
+   - **Why**: Critical for medical screening - minimizes missed pneumonia cases
+   - **Patient Safety**: False negatives are more dangerous than false positives
+   - **Result**: 98.72% (only 5 missed cases out of 390)
+```
+
+#### **b) Class Imbalance Detection & Mitigation:**
+```markdown
+### **Class Imbalance Handling:**
+
+**Detection:**
+- Analyzed class distribution: Pneumonia/Normal ≈ 3:1 ratio
+- Training: 74% pneumonia, 26% normal cases
+
+**Mitigation Strategies:**
+1. **WeightedRandomSampler**: Balanced batch composition during training
+2. **Class-weighted Loss**: CrossEntropyLoss with weights [0.61, 1.64]
+3. **Evaluation Focus**: Emphasized F1-score over accuracy
+4. **Augmentation**: Robust augmentation for minority class generalization
+
+**Impact**: Improved F1-score by ~15% compared to naive training
+```
+
+#### **c) Overfitting Prevention Measures:**
+```markdown
+### **Overfitting Prevention:**
+
+**Regularization Techniques:**
+1. **Dropout (0.5)**: Neural regularization in classifier head
+2. **L2 Weight Decay (1e-4)**: Parameter penalty across all layers
+3. **Early Stopping**: Patience=7 epochs with validation F1 monitoring
+4. **Gradient Clipping**: Max norm 1.0 for training stability
+
+**Data Augmentation (8 techniques):**
+- RandomRotation (±15°), RandomHorizontalFlip
+- RandomAffine, ColorJitter, RandomGrayscale
+- RandomErasing, ImageNet normalization
+
+**Architecture Choices:**
+- **Frozen Early Layers**: Preserved ImageNet features (60% of parameters)
+- **Progressive Fine-tuning**: Only fine-tuned deeper, task-specific layers
+
+**Result**: No overfitting observed, stable generalization to test set
+```
+
+### **GitHub Repository Structure:**
+```
+pneumonia-detection-resnet50/
+├── README.md (with all required sections)
+├── requirements.txt  
+├── pneumonia_detection_pipeline.py
+├── best_pneumonia_resnet50.pth (optional)
+├── pneumonia_detector.py (bonus)
+└── results/ (optional)
+    ├── confusion_matrix.png
+    └── training_curves.png
 ```
 
 ## 🎛️ Optimized Hyperparameters
