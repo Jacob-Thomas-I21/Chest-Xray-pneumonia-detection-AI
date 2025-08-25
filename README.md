@@ -253,8 +253,18 @@ result = detector.predict("chest_xray.jpg")
 - **Federated Learning**: Multi-site training while preserving privacy
 - **Active Learning**: Intelligent sample selection for annotation
 
-##  License
-MIT License - See LICENSE file for full details
+##  📄 License
+
+This project is All Rights Reserved with no license for use, modification, or distribution.
+
+✅ Permitted: Viewing the code for learning and reference purposes
+❌ Restricted: Any use, copying, modification, distribution, or commercial exploitation
+
+© 2025 Jacob Joshy — All rights reserved.
+
+Note: This code is provided for educational viewing only. No permission is granted to use, copy, modify, merge, publish, distribute, sublicense, or sell any part of this software without explicit written permission from the author.
+
+
 
 ##  References & Citations
 - He, K., et al. "Deep residual learning for image recognition." CVPR 2016.
